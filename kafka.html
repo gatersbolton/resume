@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kafka 面试小抄</title>
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body class="page">
+  <header>
+    <h1>Kafka 与消息流</h1>
+    <a class="back-link" href="index.html">返回主页</a>
+  </header>
+
+  <div class="card">
+    <h2>项目中的使用</h2>
+    <p>
+      秒杀下单、通知、积分异步落库走 Kafka，Producer 开启幂等与重试，分区按用户 ID 保序；
+      Consumer 采用手动提交位移，批量处理提升吞吐，失败写 DLQ 方便补偿。
+    </p>
+  </div>
+
+  <div class="card">
+    <h2>可能被问到的点</h2>
+    <ul class="qa-list">
+      <li>
+        <strong>怎么保证消息不丢、不重、不乱序？</strong>
+        Producer 开幂等 + acks=all；Topic 设置合适副本与 min.insync.replicas；
+        分区键控制顺序；消费者手动提交位移，处理失败先停提交、写 DLQ。
+      </li>
+      <li>
+        <strong>消费失败怎么补偿？</strong>
+        失败消息写 DLQ 或转移到补偿队列，定时任务/人工回放；必要时记录业务幂等 Key 保证二次执行安全。
+      </li>
+      <li>
+        <strong>如何调优吞吐与延迟？</strong>
+        Producer 批量大小、linger.ms、压缩算法；Broker 调整页缓存、网络线程；
+        Consumer 侧提高批量、并发度，配合限流防止下游被压垮。
+      </li>
+      <li>
+        <strong>和 Redis Stream 相比怎么取舍？</strong>
+        Kafka 适合高吞吐、可持久化的日志流，生态成熟；Redis Stream 轻量、延迟低，适合同机房的小流量场景。
+      </li>
+    </ul>
+  </div>
+</body>
+</html>

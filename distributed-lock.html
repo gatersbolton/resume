@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>分布式锁面试小抄</title>
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body class="page">
+  <header>
+    <h1>分布式锁实战</h1>
+    <a class="back-link" href="index.html">返回主页</a>
+  </header>
+
+  <div class="card">
+    <h2>项目落地</h2>
+    <p>
+      秒杀扣库存、店铺缓存重建都要互斥：Lua 脚本 setNX + expire 原子操作，Value 存唯一标识避免误删，
+      重试用带抖动的超时；热点缓存重建用锁串行；高争抢时降级只返回旧缓存。
+    </p>
+  </div>
+
+  <div class="card">
+    <h2>答题要点</h2>
+    <ul class="qa-list">
+      <li>
+        <strong>如何确保锁可靠释放？</strong>
+        设置过期时间 + 唯一标识，释放时用 Lua 校验 Value；长任务用定时续约/看门狗。
+      </li>
+      <li>
+        <strong>锁竞争高怎么办？</strong>
+        退避重试 + 限流；热点重建只让一个线程执行，其他读旧缓存；必要时改用队列串行化请求。
+      </li>
+      <li>
+        <strong>RedLock 该不该用？</strong>
+        单实例 + 主从同步可靠时，业务可接受少量丢失就不用 RedLock；跨机房强一致或对不可重复性敏感的场景才考虑，
+        但会牺牲延迟。通常用单节点/哨兵 + 监控即可。
+      </li>
+      <li>
+        <strong>和数据库乐观锁/悲观锁如何取舍？</strong>
+        高并发、锁粒度小、对性能敏感用 Redis 锁；需要强事务/行级一致性时用数据库乐观锁（版本号）或悲观锁。
+      </li>
+    </ul>
+  </div>
+</body>
+</html>

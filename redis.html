@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Redis 高频面试问答</title>
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body class="page">
+  <header>
+    <h1>Redis 高频问答</h1>
+    <a class="back-link" href="index.html">返回主页</a>
+  </header>
+
+  <div class="card">
+    <h2>项目里的 Redis 用法</h2>
+    <p>
+      登录态、热点店铺缓存、七天签到、附近店铺 GEO 查询、秒杀扣库存都放在 Redis。
+      通过逻辑过期 + 后台重建、空值缓存、互斥锁来防止穿透/击穿/雪崩；
+      Lua 脚本保障扣库存与去重的原子性，GEO + ZSet 做距离排序。
+    </p>
+  </div>
+
+  <div class="card">
+    <h2>常见追问（含题号 8-11）</h2>
+    <ul class="qa-list">
+      <li>
+        <strong>8. Redis 主要解决什么问题？</strong>
+        低延迟访问热点数据、计数、Session、排行榜、分布式锁、消息流，
+        是内存 KV/数据结构服务，解决数据库抗不住的读写压力。
+      </li>
+      <li>
+        <strong>9. Redis 单机 QPS 一般多少？</strong>
+        常见 5w-10w+ QPS，取决于网卡、实例规格、命令类型、Pipeline 和持久化配置。
+        生产要压测自己的命令组合，配合指标看 CPU、慢查询和阻塞。
+      </li>
+      <li>
+        <strong>10. 如果 QPS 远超 Redis 的 QPS（不允许集群/多级缓存）怎么办？</strong>
+        拆热点 Key：拆分 Bucket 或按业务字段分摊；用 Pipeline 合并请求；
+        对超热点数据做本地缓存/旁路读，不写入 Redis；把写请求落消息队列异步处理；
+        合理过期与预热，避免突发抖动。
+      </li>
+      <li>
+        <strong>11. 几万人同时访问淘宝页面，Redis 承载不足时怎么兜底？</strong>
+        先限流/降级：黑白名单、令牌桶限制高危接口；热点数据直接返回兜底缓存或静态页；
+        把更新写入消息队列削峰，后台批量刷新缓存；
+        关键路径加隔离线程池与超时保护，避免把压力传递到数据库。
+      </li>
+      <li>
+        <strong>缓存穿透/击穿/雪崩防护</strong>
+        穿透：空值缓存 + 参数校验 + Bloom；击穿：逻辑过期 + 互斥锁单线程重建；
+        雪崩：TTL 打散，核心热点预热，必要时关闭自动过期改逻辑过期。
+      </li>
+      <li>
+        <strong>持久化与数据安全</strong>
+        RDB 周期快照 + AOF everysec，主从复制异地机房，启用 lazyfree 避免删除阻塞；
+        键空间报警 + 热点 Key 告警 + 慢日志监控。
+      </li>
+    </ul>
+  </div>
+</body>
+</html>

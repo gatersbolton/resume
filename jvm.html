@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JVM 面试小抄</title>
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body class="page">
+  <header>
+    <h1>JVM 性能与调优</h1>
+    <a class="back-link" href="index.html">返回主页</a>
+  </header>
+
+  <div class="card">
+    <h2>在项目里的实践</h2>
+    <p>
+      Spring Boot 服务跑在 G1 GC，Xms=Xmx 固定堆，开启 ExitOnOutOfMemoryError。
+      压测时根据响应延迟、GC 停顿和吞吐率调节堆大小、Region 数、线程池参数；
+      对 Netty/Boss、业务线程池分开限流监控，避免队列堆积触发 Full GC。
+    </p>
+  </div>
+
+  <div class="card">
+    <h2>常见问答</h2>
+    <ul class="qa-list">
+      <li>
+        <strong>如何选择 GC？</strong>
+        线上偏延迟的接口用 G1/ ZGC，新版本优先；吞吐型批处理可用 Parallel GC。
+        我会先压测，观察 GC 停顿与吞吐，再决定调优方向。
+      </li>
+      <li>
+        <strong>常配的 JVM 参数？</strong>
+        -Xms/-Xmx 固定堆，-XX:MaxGCPauseMillis=200 以内，-XX:InitiatingHeapOccupancyPercent 调 30-45，
+        -XX:+UseStringDeduplication、-XX:+HeapDumpOnOutOfMemoryError，必要时加 -XX:MetaspaceSize。
+      </li>
+      <li>
+        <strong>定位内存泄漏/性能抖动怎么做？</strong>
+        用 jmap/jcmd 取堆 Dump，MAT/VisualVM 分析；配合 Arthas thread/trace 看阻塞；
+        监控 GC 次数、老年代占用、Survivor 晋升失败和线程池排队长度。
+      </li>
+      <li>
+        <strong>Full GC 频繁怎么办？</strong>
+        排查大对象/直接内存泄漏，调小晋升阈值避免过早进入老年代；
+        检查线程池/阻塞 I/O 导致的 STW 较长；必要时加大堆或升级到低停顿 GC。
+      </li>
+    </ul>
+  </div>
+</body>
+</html>
