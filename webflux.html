@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WebFlux 面试小抄</title>
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body class="page">
+  <header>
+    <h1>WebFlux 网关与响应式实践</h1>
+    <a class="back-link" href="index.html">返回主页</a>
+  </header>
+
+  <div class="card">
+    <h2>我在项目里怎么用 WebFlux</h2>
+    <p>
+      网关层用 WebFlux 写的路由与过滤器，主要价值是非阻塞 I/O 可以把长耗时的科研计算请求排队托管，
+      不会因为单个请求阻塞线程而拖垮网关。配合自定义的异步任务协议，把计算请求转发给 FastAPI 微服务，
+      再把进度查询、结果下载的接口整合回统一入口。
+    </p>
+  </div>
+
+  <div class="card">
+    <h2>面试常见追问 & 回答要点</h2>
+    <ul class="qa-list">
+      <li>
+        <strong>为什么选 WebFlux 而不是传统 Servlet？</strong>
+        科研计算是长耗时 I/O 密集场景，非阻塞模式下同样的硬件能承载更多并发，
+        线程切换开销小，配合背压可以防止请求风暴把服务压垮。
+      </li>
+      <li>
+        <strong>怎么处理调用 FastAPI 的超时与重试？</strong>
+        用 WebClient 配置超时，结合 retryWhen/backoff，只对幂等的进度查询和下载接口做重试，
+        计算提交接口则返回队列 ID 让用户查询，不做重复提交。
+      </li>
+      <li>
+        <strong>背压和限流怎么落地？</strong>
+        在路由过滤器里加令牌桶限流，Reactive Streams 自带背压，
+        同时对下游微服务的并发数做 semaphore 控制，避免瞬时洪峰。
+      </li>
+      <li>
+        <strong>如何排查响应式链路的问题？</strong>
+        加了 log() 与 checkpoint()，并使用 StepVerifier 做单元测试，
+        生产上通过 Micrometer + Prometheus 观察事件循环的阻塞告警。
+      </li>
+    </ul>
+  </div>
+</body>
+</html>
