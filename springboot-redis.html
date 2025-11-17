@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spring Boot + Redis 仿大众点评</title>
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body class="page">
+  <header>
+    <h1>仿大众点评项目亮点</h1>
+    <a class="back-link" href="index.html">返回主页</a>
+  </header>
+
+  <div class="card">
+    <h2>我怎么讲这个项目</h2>
+    <p>
+      参考大众点评的核心体验，用 Spring Boot 写店铺、用户、点评、签到、优惠券模块，
+      Redis 承担缓存、Session、附近店铺搜索和秒杀排队，Kafka 做异步下单与通知。
+      主要目标是展示“高并发读多写少、热点突发”下的稳定性和一致性方案。
+    </p>
+  </div>
+
+  <div class="card">
+    <h2>主线技术拆解</h2>
+    <ul class="qa-list">
+      <li>
+        <strong>缓存设计：</strong>
+        热点店铺用逻辑过期 + 后台重建，避免大 Key 同时失效；空值缓存挡穿透；互斥锁串行重建；
+        TTL 按业务分层配置。
+      </li>
+      <li>
+        <strong>登录与签到：</strong>
+        Token 存 Redis，设置滑动过期；签到用 Bitmap 记录 7 天状态，HyperLogLog 统计活跃用户。
+      </li>
+      <li>
+        <strong>秒杀优惠券：</strong>
+        预减库存、分布式锁控制下单幂等，Kafka 异步下单落库，消费者侧再校验库存，防止超卖。
+      </li>
+      <li>
+        <strong>监控与调优：</strong>
+        指标包含缓存命中率、重建耗时、库存扣减耗时与失败率；JVM 堆外缓存、GC 次数和线程池队列长度都有报警阈值。
+      </li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>面试可能会追问什么</h2>
+    <ul class="qa-list">
+      <li>
+        <strong>Q：缓存击穿/雪崩怎么解决？</strong>
+        A：空值缓存 + 互斥锁防击穿，逻辑过期 + 后台重建防雪崩，同时按业务打散 TTL，核心热点用预热。
+      </li>
+      <li>
+        <strong>Q：怎么保证秒杀不超卖、不重复下单？</strong>
+        A：下单前用分布式锁或 Lua 原子脚本扣减库存并写入用户下单集合，Kafka 异步落库，消费者再次校验防重。
+      </li>
+      <li>
+        <strong>Q：附近店铺搜索是怎么做的？</strong>
+        A：Redis GEO 保存经纬度，按圈选 + 距离排序返回，热点区域做分页缓存或降级返回附近热门店铺。
+      </li>
+      <li>
+        <strong>Q：JVM/线程池如何配置？</strong>
+        A：按压测决定 Xms=Xmx，G1 GC，Netty/Boss 线程与业务线程分开，线程池 core/max/queue 通过可观测数据动态调整。
+      </li>
+    </ul>
+  </div>
+</body>
+</html>

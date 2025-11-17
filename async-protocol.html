@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>异步协议与网关设计</title>
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body class="page">
+  <header>
+    <h1>异步协议与网关转发</h1>
+    <a class="back-link" href="index.html">返回主页</a>
+  </header>
+
+  <div class="card">
+    <h2>协议核心</h2>
+    <p>
+      网关接收计算请求后返回 taskId，后续进度/结果/下载都用同一个 taskId 查询，
+      这样前端只需轮询一个接口；任务状态包含阶段、百分比、消息、下载链接等字段，便于展示与排错。
+    </p>
+  </div>
+
+  <div class="card">
+    <h2>面试问答</h2>
+    <ul class="qa-list">
+      <li>
+        <strong>如何保证任务不会丢？</strong>
+        网关把请求写入消息队列并落库，拿到确认才返回 taskId；微服务处理完也回写状态，
+        网关和前端都可以重试查询，状态是幂等的。
+      </li>
+      <li>
+        <strong>前端轮询的频率怎么定？</strong>
+        默认 2-3 秒，配合指数退避避免高峰；当状态进入完成/失败会立即停止，
+        如果服务端支持 SSE 或 WebSocket 则自动切换为推送模式。
+      </li>
+      <li>
+        <strong>下载与可视化如何统一？</strong>
+        结果表格、图片和报告都注册到结果中心，返回统一的下载/预览链接，
+        方便前端用同一套组件展示，并记录审计日志。
+      </li>
+      <li>
+        <strong>异常链路怎么设计？</strong>
+        进度接口返回错误码和提示，前端根据错误码引导用户重新提交或联系客服；
+        网关也会上报 Sentry/Prometheus，便于快速定位。
+      </li>
+    </ul>
+  </div>
+</body>
+</html>

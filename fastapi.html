@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FastAPI 微服务问答</title>
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body class="page">
+  <header>
+    <h1>FastAPI 微服务实践</h1>
+    <a class="back-link" href="index.html">返回主页</a>
+  </header>
+
+  <div class="card">
+    <h2>服务职责</h2>
+    <p>
+      FastAPI 承载科研算法计算与可视化。每个算法独立成服务，通过统一的数据校验、任务入队、进度回调接口与网关对齐。
+      数据预处理、计算、可视化三段拆开，方便复用与弹性扩容。
+    </p>
+  </div>
+
+  <div class="card">
+    <h2>高频问答</h2>
+    <ul class="qa-list">
+      <li>
+        <strong>如何保证计算过程可追溯？</strong>
+        请求带唯一任务 ID，入队前把入参、版本号和模型配置落库，计算日志流式写入，对应进度接口可以追溯关键步骤与耗时。
+      </li>
+      <li>
+        <strong>计算耗时长怎么避免接口超时？</strong>
+        提交接口立即返回任务 ID，计算异步执行；进度查询接口返回阶段、百分比和错误信息；完成后提供结果下载链接或可视化图表。
+      </li>
+      <li>
+        <strong>安全与资源隔离怎么做？</strong>
+        任务队列按用户配额划分，容器层面限定 CPU/GPU/内存；上传数据校验文件类型和大小，防止恶意 payload；对外只暴露网关地址。
+      </li>
+      <li>
+        <strong>API 文档怎么维护？</strong>
+        利用 FastAPI 自带的 OpenAPI 自动化，加上示例请求/响应；同时写了面向前端的交互说明，确保工作流衔接顺畅。
+      </li>
+    </ul>
+  </div>
+</body>
+</html>

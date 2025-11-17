@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vue3 + Element Plus 问答</title>
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body class="page">
+  <header>
+    <h1>前端工作流与交互设计</h1>
+    <a class="back-link" href="index.html">返回主页</a>
+  </header>
+
+  <div class="card">
+    <h2>实现思路</h2>
+    <p>
+      用 Vue3 组合式 API 搭配 Element Plus 组件库搭建四步工作流：数据上传/选择、参数配置、预览计算、最终计算与下载。
+      进度轮询组件抽成 Hook，方便多个算法页面复用；“预览/最终”双模渲染保证用户先确认结果再耗费计算资源。
+    </p>
+  </div>
+
+  <div class="card">
+    <h2>面试问答</h2>
+    <ul class="qa-list">
+      <li>
+        <strong>为什么拆成四步工作流？</strong>
+        让科研用户循序渐进地检查数据和参数，预览阶段直接展示样例结果，降低误操作成本；最终计算才触发真实任务。
+      </li>
+      <li>
+        <strong>进度轮询怎么做的？</strong>
+        useProgress 组合函数封装 setInterval 和取消逻辑，基于任务 ID 调用网关接口，
+        当进度到 100% 或状态失败时自动停止并发出事件给页面组件。
+      </li>
+      <li>
+        <strong>如何保证组件可复用？</strong>
+        页面层用配置驱动的 schema 描述表单项和图表，核心逻辑（上传、校验、轮询、下载）都封装在 composable 与 service 层，
+        新增算法页面时只需要补充 schema 与接口地址。
+      </li>
+      <li>
+        <strong>遇到的性能问题？</strong>
+        图表渲染大数据量时用虚拟滚动与分块加载，上传大文件时用分片与断点续传接口。
+      </li>
+    </ul>
+  </div>
+</body>
+</html>

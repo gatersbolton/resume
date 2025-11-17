@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>赵可鉴｜简历静态网页</title>
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+  <header class="hero">
+    <div>
+      <p class="eyebrow">静态网页版</p>
+      <h1>赵可鉴</h1>
+      <p class="subtitle">以原始 PDF 版式为基准的可浏览简历，并附面试准备链接</p>
+      <div class="cta-row">
+        <a class="button" href="#project-highlight">查看核心项目</a>
+        <a class="button secondary" href="#resume-pdf">浏览 PDF 版式</a>
+      </div>
+    </div>
+    <div class="hero-links">
+      <p>面试问答速查：</p>
+      <div class="pill-group">
+        <a class="pill" href="webflux.html">WebFlux</a>
+        <a class="pill" href="fastapi.html">FastAPI 微服务</a>
+        <a class="pill" href="vue3-element.html">Vue3 + Element Plus</a>
+        <a class="pill" href="mybatis.html">MyBatis 用户模块</a>
+        <a class="pill" href="async-protocol.html">异步协议与网关</a>
+        <a class="pill" href="springboot-redis.html">Spring Boot + Redis 团队购</a>
+        <a class="pill" href="redis.html">Redis 高频问答</a>
+        <a class="pill" href="jvm.html">JVM 性能与调优</a>
+        <a class="pill" href="kafka.html">Kafka 与消息流</a>
+        <a class="pill" href="distributed-lock.html">分布式锁</a>
+        <a class="pill" href="meituan-intern.html">美团实习问答</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="content">
+    <section id="project-highlight" class="panel">
+      <div class="panel-header">
+        <p class="eyebrow">2025 年 07 月 - 至今</p>
+        <h2>研究生课题组科研成果 Web 应用</h2>
+      </div>
+      <p class="lede">
+        集成校内地质力学课题组的多项科研 Python 算法为三层 Web 应用，前端 <a href="vue3-element.html">Vue3 + Element Plus</a>，后端 <a href="webflux.html">WebFlux 网关</a> 与 <a href="mybatis.html">MyBatis 用户模块</a>，<a href="fastapi.html">FastAPI 微服务</a> 承载计算与可视化，支持演示数据、一键计算、进度查询和结果下载。
+      </p>
+      <ul class="bullet-list">
+        <li>
+          负责整体架构与落地：抽象计算/进度/结果/下载/可视化接口，<a href="async-protocol.html">网关转发长耗时任务并设计异步协议</a>；
+          前端四步工作流、进度轮询组件与“预览/最终”双模渲染，显著提升交互体验。
+        </li>
+        <li>提供演示数据与一键计算，以便快速演示科研算法的业务价值；</li>
+        <li>设计下载与可视化接口，确保科研结果便于分享与复现。</li>
+      </ul>
+    </section>
+
+    <section id="project-dianping" class="panel">
+      <div class="panel-header">
+        <p class="eyebrow">2024 年 03 月 - 2024 年 09 月</p>
+        <h2>Spring Boot + Redis 仿大众点评</h2>
+      </div>
+      <p class="lede">
+        参考大众点评的业务流程，用 Spring Boot 落地店铺、点评、签到、优惠券等模块，
+        用 <a href="redis.html">Redis</a> 处理登录态、热点店铺缓存、地理位置搜索与秒杀队列，
+        搭配 <a href="distributed-lock.html">分布式锁</a> 确保库存一致性，消息异步用 <a href="kafka.html">Kafka</a> 解耦。
+      </p>
+      <ul class="bullet-list">
+        <li>
+          登录鉴权与七天签到打卡，利用 Redis Bitmap 与 HyperLogLog，吸顶榜单支持高并发计数；
+        </li>
+        <li>
+          店铺缓存穿透/雪崩/击穿防护：空值缓存、逻辑过期 + 异步重建、热点 Key 互斥锁；
+        </li>
+        <li>
+          秒杀优惠券：分布式锁 + 队列异步下单，保序消费校验库存，并记录下单链路日志；
+        </li>
+        <li>
+          JVM 与线程池参数按压测调优，结合监控定位 GC、慢查询和缓存命中率异常。
+        </li>
+      </ul>
+    </section>
+
+    <section id="experience-meituan" class="panel">
+      <div class="panel-header">
+        <p class="eyebrow">2023 年 07 月 - 2023 年 10 月</p>
+        <h2>美团到店营销技术实习</h2>
+      </div>
+      <p class="lede">
+        在美团到店营销组实习，参与新人券与活动模板平台，主导接口治理、压测与观测，
+        对外宣讲可参考 <a href="meituan-intern.html">美团实习问答页</a>，里面整理了常见追问和回答口径。
+      </p>
+      <ul class="bullet-list">
+        <li>梳理新人券下发链路，补充幂等与限流，输出 Lua 防重逻辑和监控埋点。</li>
+        <li>活动模板服务压测与降级预案，落地灰度、熔断与超时兜底，确保大促稳态。</li>
+        <li>与数据同学配合做 AB 实验，提升曝光转化；复盘故障并形成 SOP 清单。</li>
+      </ul>
+    </section>
+
+    <section id="resume-pdf" class="panel">
+      <div class="panel-header">
+        <p class="eyebrow">原版呈现</p>
+        <h2>PDF 版式嵌入</h2>
+      </div>
+      <p class="lede">下方直接内嵌原始《赵可鉴简历.pdf》，方便在网页上浏览保持版式一致，并可下载留存。</p>
+      <div class="pdf-frame">
+        <object data="赵可鉴简历.pdf" type="application/pdf">
+          <p>无法直接预览 PDF？<a href="赵可鉴简历.pdf">点击下载</a>。</p>
+        </object>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>为面试准备而构建的静态网页版本。点击上方标签进入对应技术答题小抄。</p>
+  </footer>
+</body>
+</html>
