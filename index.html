@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>赵可鉴｜简历静态网页</title>
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+  <header class="hero">
+    <div>
+      <p class="eyebrow">静态网页版</p>
+      <h1>赵可鉴</h1>
+      <p class="subtitle">以原始 PDF 版式为基准的可浏览简历，并附面试准备链接</p>
+      <div class="cta-row">
+        <a class="button" href="#project-highlight">查看核心项目</a>
+        <a class="button secondary" href="#resume-pdf">浏览 PDF 版式</a>
+      </div>
+    </div>
+    <div class="hero-links">
+      <p>面试问答速查：</p>
+      <div class="pill-group">
+        <a class="pill" href="webflux.html">WebFlux</a>
+        <a class="pill" href="fastapi.html">FastAPI 微服务</a>
+        <a class="pill" href="vue3-element.html">Vue3 + Element Plus</a>
+        <a class="pill" href="mybatis.html">MyBatis 用户模块</a>
+        <a class="pill" href="async-protocol.html">异步协议与网关</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="content">
+    <section id="project-highlight" class="panel">
+      <div class="panel-header">
+        <p class="eyebrow">2025 年 07 月 - 至今</p>
+        <h2>研究生课题组科研成果 Web 应用</h2>
+      </div>
+      <p class="lede">
+        集成校内地质力学课题组的多项科研 Python 算法为三层 Web 应用，前端 <a href="vue3-element.html">Vue3 + Element Plus</a>，后端 <a href="webflux.html">WebFlux 网关</a> 与 <a href="mybatis.html">MyBatis 用户模块</a>，<a href="fastapi.html">FastAPI 微服务</a> 承载计算与可视化，支持演示数据、一键计算、进度查询和结果下载。
+      </p>
+      <ul class="bullet-list">
+        <li>
+          负责整体架构与落地：抽象计算/进度/结果/下载/可视化接口，<a href="async-protocol.html">网关转发长耗时任务并设计异步协议</a>；
+          前端四步工作流、进度轮询组件与“预览/最终”双模渲染，显著提升交互体验。
+        </li>
+        <li>提供演示数据与一键计算，以便快速演示科研算法的业务价值；</li>
+        <li>设计下载与可视化接口，确保科研结果便于分享与复现。</li>
+      </ul>
+    </section>
+
+    <section id="resume-pdf" class="panel">
+      <div class="panel-header">
+        <p class="eyebrow">原版呈现</p>
+        <h2>PDF 版式嵌入</h2>
+      </div>
+      <p class="lede">下方直接内嵌原始《赵可鉴简历.pdf》，方便在网页上浏览保持版式一致，并可下载留存。</p>
+      <div class="pdf-frame">
+        <object data="赵可鉴简历.pdf" type="application/pdf">
+          <p>无法直接预览 PDF？<a href="赵可鉴简历.pdf">点击下载</a>。</p>
+        </object>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>为面试准备而构建的静态网页版本。点击上方标签进入对应技术答题小抄。</p>
+  </footer>
+</body>
+</html>

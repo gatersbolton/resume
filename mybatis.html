@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MyBatis 用户模块问答</title>
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body class="page">
+  <header>
+    <h1>MyBatis 用户与权限模块</h1>
+    <a class="back-link" href="index.html">返回主页</a>
+  </header>
+
+  <div class="card">
+    <h2>职责与实现</h2>
+    <p>
+      用户管理、角色与配额都放在独立的 MyBatis 模块。基于 mapper + XML 维护复杂查询，
+      对外暴露接口由网关统一鉴权，任务配额与速率限制也在这里做校验，避免重复提交耗尽计算资源。
+    </p>
+  </div>
+
+  <div class="card">
+    <h2>面试可能追问</h2>
+    <ul class="qa-list">
+      <li>
+        <strong>为什么不用 JPA？</strong>
+        需要精细控制 SQL 以适配不同科研业务的查询与配额统计，MyBatis 的映射与 XML 更直观，
+        也方便做性能调优与审计。
+      </li>
+      <li>
+        <strong>如何做数据权限隔离？</strong>
+        账号与课题组、项目 ID 绑定，所有查询都在 mapper 层注入租户条件，
+        通过拦截器自动附加 where 条件，避免遗漏。
+      </li>
+      <li>
+        <strong>并发下的配额控制？</strong>
+        提交任务时用数据库行级锁或 Redis 分布式锁扣减配额，再写入任务表，确保不会出现超额提交。
+      </li>
+      <li>
+        <strong>SQL 性能怎么保证？</strong>
+        对高频查询加索引，定期跑 explain；缓存少量静态配置到 Redis，
+        并监控慢查询日志，发现需要优化的语句及时重写。
+      </li>
+    </ul>
+  </div>
+</body>
+</html>
